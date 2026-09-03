@@ -4,6 +4,7 @@ import type {
   CharterRequest,
   ForecastResult,
   MarketDriver,
+  Port,
   RatePoint,
   RepositioningSuggestion,
   RiskAlert,
