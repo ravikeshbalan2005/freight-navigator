@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { RiskAlert } from "@/types";
 
 const LEVELS = [5, 4, 3, 2, 1];
