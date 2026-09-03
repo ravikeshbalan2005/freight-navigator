@@ -4,6 +4,7 @@ import type {
   CharterRequest,
   ForecastResult,
   MarketDriver,
+  Port,
   RatePoint,
   RepositioningSuggestion,
   RiskAlert,
@@ -22,7 +23,8 @@ const CARGO_FACTOR: Record<string, number> = {
   Fertilizer: 0.97,
 };
 
-const portOf = (code: string) => PORTS.find((p) => p.code === code) ?? PORTS[0]!;
+const portOf = (code: string, ports: Port[] = PORTS) =>
+  ports.find((p) => p.code === code) ?? ports[0] ?? PORTS[0]!;
 
 /** Deterministic pseudo-noise so the same request always yields the same forecast. */
 const wave = (seed: number, i: number) =>
