@@ -135,7 +135,24 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="min-h-screen bg-background font-body">
+        {/* ambient pastel blobs */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        >
+          <div className="absolute -top-32 left-1/4 size-[28rem] rounded-full bg-sky/40 blur-3xl" />
+          <div className="absolute right-0 top-1/3 size-[24rem] rounded-full bg-lilac/40 blur-3xl" />
+          <div className="absolute bottom-0 left-0 size-[22rem] rounded-full bg-mint/40 blur-3xl" />
+        </div>
+        <div className="mx-auto flex max-w-[1440px]">
+          <Sidebar />
+          <div className="flex min-w-0 flex-1 flex-col gap-6 p-4 md:p-6">
+            <TopNav greeting="Command Center" />
+            <Outlet />
+          </div>
+        </div>
+      </div>
     </QueryClientProvider>
   );
 }
