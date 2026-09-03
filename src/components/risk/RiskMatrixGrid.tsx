@@ -36,7 +36,7 @@ export function RiskMatrixGrid({ alerts }: { alerts: RiskAlert[] }) {
               </div>
             );
           })}
-        </>
+        </Fragment>
       ))}
       <div />
       {[1, 2, 3, 4, 5].map((i) => (
