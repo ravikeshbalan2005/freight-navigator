@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { RiskAlert } from "@/types";
 
 const LEVELS = [5, 4, 3, 2, 1];
@@ -13,8 +14,8 @@ export function RiskMatrixGrid({ alerts }: { alerts: RiskAlert[] }) {
   return (
     <div className="mt-4 grid grid-cols-[auto_repeat(5,1fr)] gap-1.5 text-[10px]">
       {LEVELS.map((p) => (
-        <>
-          <div key={`l${p}`} className="flex items-center justify-end pr-2 text-soft">
+        <Fragment key={p}>
+          <div className="flex items-center justify-end pr-2 text-soft">
             P{p}
           </div>
           {[1, 2, 3, 4, 5].map((i) => {
@@ -36,7 +37,7 @@ export function RiskMatrixGrid({ alerts }: { alerts: RiskAlert[] }) {
               </div>
             );
           })}
-        </>
+        </Fragment>
       ))}
       <div />
       {[1, 2, 3, 4, 5].map((i) => (

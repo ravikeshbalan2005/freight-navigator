@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { TopNav } from "@/components/layout/TopNav";
 
 function NotFoundComponent() {
   return (
@@ -77,14 +79,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Cargolens — Freight Intelligence" },
+      {
+        name: "description",
+        content:
+          "AI-powered freight forecasting and vessel optimization: predict rates, pick the right vessel, and shift from spot to multi-voyage chartering.",
+      },
+      { name: "author", content: "Cargolens" },
+      { property: "og:title", content: "Cargolens — Freight Intelligence" },
+      {
+        property: "og:description",
+        content:
+          "Predict freight rates, recommend vessels, and lock smarter multi-voyage charters.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -92,6 +101,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -120,7 +135,24 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="min-h-screen bg-background font-body">
+        {/* ambient pastel blobs */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        >
+          <div className="absolute -top-32 left-1/4 size-[28rem] rounded-full bg-sky/40 blur-3xl" />
+          <div className="absolute right-0 top-1/3 size-[24rem] rounded-full bg-lilac/40 blur-3xl" />
+          <div className="absolute bottom-0 left-0 size-[22rem] rounded-full bg-mint/40 blur-3xl" />
+        </div>
+        <div className="mx-auto flex max-w-[1440px]">
+          <Sidebar />
+          <div className="flex min-w-0 flex-1 flex-col gap-6 p-4 md:p-6">
+            <TopNav greeting="Command Center" />
+            <Outlet />
+          </div>
+        </div>
+      </div>
     </QueryClientProvider>
   );
 }
