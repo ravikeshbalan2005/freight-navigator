@@ -14,7 +14,217 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ports: {
+        Row: {
+          code: string
+          congestion: number
+          country: string
+          created_at: string
+          lat: number
+          lng: number
+          max_draft: number
+          max_loa: number
+          name: string
+        }
+        Insert: {
+          code: string
+          congestion: number
+          country: string
+          created_at?: string
+          lat: number
+          lng: number
+          max_draft: number
+          max_loa: number
+          name: string
+        }
+        Update: {
+          code?: string
+          congestion?: number
+          country?: string
+          created_at?: string
+          lat?: number
+          lng?: number
+          max_draft?: number
+          max_loa?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      repositioning_suggestions: {
+        Row: {
+          cargo_hint: string
+          from_port: string
+          id: string
+          idle_days_saved: number
+          to_port: string
+          vessel_id: string
+        }
+        Insert: {
+          cargo_hint: string
+          from_port: string
+          id?: string
+          idle_days_saved: number
+          to_port: string
+          vessel_id: string
+        }
+        Update: {
+          cargo_hint?: string
+          from_port?: string
+          id?: string
+          idle_days_saved?: number
+          to_port?: string
+          vessel_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repositioning_suggestions_vessel_id_fkey"
+            columns: ["vessel_id"]
+            isOneToOne: false
+            referencedRelation: "vessels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      risk_alerts: {
+        Row: {
+          category: string
+          detail: string
+          id: string
+          impact: number
+          occurred_at: string
+          probability: number
+          severity: string
+          title: string
+        }
+        Insert: {
+          category: string
+          detail: string
+          id: string
+          impact: number
+          occurred_at?: string
+          probability: number
+          severity: string
+          title: string
+        }
+        Update: {
+          category?: string
+          detail?: string
+          id?: string
+          impact?: number
+          occurred_at?: string
+          probability?: number
+          severity?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      schedule_segments: {
+        Row: {
+          id: string
+          kind: string
+          label: string
+          start_week: number
+          vessel_id: string
+          weeks: number
+        }
+        Insert: {
+          id?: string
+          kind: string
+          label: string
+          start_week: number
+          vessel_id: string
+          weeks: number
+        }
+        Update: {
+          id?: string
+          kind?: string
+          label?: string
+          start_week?: number
+          vessel_id?: string
+          weeks?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_segments_vessel_id_fkey"
+            columns: ["vessel_id"]
+            isOneToOne: false
+            referencedRelation: "vessels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vessel_specs: {
+        Row: {
+          beam: number
+          draft: number
+          dwt_max: number
+          dwt_min: number
+          klass: string
+          loa: number
+          load_rate: number
+          rate_per_tonne: number
+          sort_order: number
+        }
+        Insert: {
+          beam: number
+          draft: number
+          dwt_max: number
+          dwt_min: number
+          klass: string
+          loa: number
+          load_rate: number
+          rate_per_tonne: number
+          sort_order?: number
+        }
+        Update: {
+          beam?: number
+          draft?: number
+          dwt_max?: number
+          dwt_min?: number
+          klass?: string
+          loa?: number
+          load_rate?: number
+          rate_per_tonne?: number
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      vessels: {
+        Row: {
+          id: string
+          idle_days: number
+          klass: string
+          lat: number
+          lng: number
+          name: string
+          next_free: string
+          route: string
+          status: string
+        }
+        Insert: {
+          id: string
+          idle_days?: number
+          klass: string
+          lat: number
+          lng: number
+          name: string
+          next_free: string
+          route: string
+          status: string
+        }
+        Update: {
+          id?: string
+          idle_days?: number
+          klass?: string
+          lat?: number
+          lng?: number
+          name?: string
+          next_free?: string
+          route?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
