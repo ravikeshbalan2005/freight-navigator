@@ -5,7 +5,7 @@ import type { CharterRecommendation } from "@/types";
 export function AiRecommendationCard({
   recommendation,
 }: {
-  recommendation?: CharterRecommendation;
+  recommendation?: CharterRecommendation | undefined;
 }) {
   const strategy =
     recommendation?.strategies.find((s) => s.recommended) ?? recommendation?.strategies[0];
