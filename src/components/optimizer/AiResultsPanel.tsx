@@ -6,7 +6,7 @@ export function AiResultsPanel({
   recommendation,
   isPending,
 }: {
-  recommendation?: CharterRecommendation;
+  recommendation?: CharterRecommendation | undefined;
   isPending: boolean;
 }) {
   if (isPending) {
