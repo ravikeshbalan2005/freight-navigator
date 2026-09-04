@@ -132,12 +132,10 @@ export const fleetFn = createServerFn({ method: "GET" }).handler(
 );
 
 export const risksFn = createServerFn({ method: "GET" }).handler(async (): Promise<RiskAlert[]> => {
-  const supabase = publicClient();
   const { data } = await publicClient()
     .from("risk_alerts")
     .select("*")
     .order("occurred_at", { ascending: false });
-  void supabase;
   return (data ?? []).map((r) => ({
     id: r.id,
     title: r.title,
