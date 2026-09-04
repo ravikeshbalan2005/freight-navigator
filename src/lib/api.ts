@@ -1,9 +1,9 @@
 /**
  * Data access layer.
  *
- * The dashboard currently runs on a deterministic in-app simulation of the
- * forecasting engine. Point `API_BASE_URL` at the SIH backend and flip
- * `USE_REMOTE` to route the same calls to real endpoints.
+ * Reads live data from the Cloud backend through TanStack server functions.
+ * Set `VITE_API_BASE_URL` to route the same calls at an external SIH backend
+ * instead.
  */
 import type {
   CharterRecommendation,
@@ -14,14 +14,7 @@ import type {
   ScheduleSegment,
   Vessel,
 } from "@/types";
-import {
-  buildForecast,
-  buildRecommendation,
-  FLEET,
-  REPOSITIONING,
-  RISK_ALERTS,
-  SCHEDULE,
-} from "./engine";
+import { fleetFn, forecastFn, optimizeFn, risksFn } from "./freight.functions";
 
 export const API_BASE_URL =
   (import.meta.env["VITE_API_BASE_URL"] as string | undefined) ?? "";
@@ -37,24 +30,22 @@ async function remote<T>(path: string, init?: RequestInit): Promise<T> {
   return (await res.json()) as T;
 }
 
-const delay = <T,>(value: T, ms = 320) =>
-  new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
-
 export const api = {
   forecast: (req: CharterRequest): Promise<ForecastResult> =>
     USE_REMOTE
       ? remote("/forecast", { method: "POST", body: JSON.stringify(req) })
-      : delay(buildForecast(req)),
+      : forecastFn({ data: req }),
 
   optimize: (req: CharterRequest): Promise<CharterRecommendation> =>
     USE_REMOTE
       ? remote("/optimize", { method: "POST", body: JSON.stringify(req) })
-      : delay(buildRecommendation(req), 550),
+      : optimizeFn({ data: req }),
 
-  fleet: (): Promise<{ vessels: Vessel[]; schedule: ScheduleSegment[]; repositioning: RepositioningSuggestion[] }> =>
-    USE_REMOTE
-      ? remote("/fleet")
-      : delay({ vessels: FLEET, schedule: SCHEDULE, repositioning: REPOSITIONING }),
+  fleet: (): Promise<{
+    vessels: Vessel[];
+    schedule: ScheduleSegment[];
+    repositioning: RepositioningSuggestion[];
+  }> => (USE_REMOTE ? remote("/fleet") : fleetFn()),
 
-  risks: (): Promise<RiskAlert[]> => (USE_REMOTE ? remote("/risks") : delay(RISK_ALERTS)),
+  risks: (): Promise<RiskAlert[]> => (USE_REMOTE ? remote("/risks") : risksFn()),
 };
