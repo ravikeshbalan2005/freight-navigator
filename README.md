@@ -222,15 +222,8 @@ So, in one line, your SIH project is:
 This is a stronger SIH framing because you're not just building a freight-price prediction model. You're building a decision-support system for chartering, where forecasting directly leads to a business action.
 also made connection with https://github.com/ravikeshbalan2005/sih_2026_frontend.git
 
-This project was built with [Lovable](https://lovable.dev).
 
-## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/39ee6d45-2b7f-4e8b-89cb-a9f7dbf59ad3).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
