@@ -33,9 +33,9 @@ const wave = (seed: number, i: number) =>
 const seedOf = (s: string) =>
   [...s].reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 997, 7);
 
-export function buildForecast(req: CharterRequest): ForecastResult {
-  const origin = portOf(req.originCode);
-  const dest = portOf(req.destinationCode);
+export function buildForecast(req: CharterRequest, ports: Port[] = PORTS): ForecastResult {
+  const origin = portOf(req.originCode, ports);
+  const dest = portOf(req.destinationCode, ports);
   const seed = seedOf(req.originCode + req.destinationCode + req.cargo);
   const base =
     22 +
@@ -120,9 +120,9 @@ export function buildForecast(req: CharterRequest): ForecastResult {
   };
 }
 
-function scoreVessel(spec: VesselSpec, req: CharterRequest) {
-  const dest = portOf(req.destinationCode);
-  const origin = portOf(req.originCode);
+function scoreVessel(spec: VesselSpec, req: CharterRequest, ports: Port[] = PORTS) {
+  const dest = portOf(req.destinationCode, ports);
+  const origin = portOf(req.originCode, ports);
   const draftOk = spec.draft <= Math.min(dest.maxDraft, origin.maxDraft);
   const loaOk = spec.loa <= Math.min(dest.maxLoa, origin.maxLoa);
   const fits = req.tonnage >= spec.dwtMin * 0.85 && req.tonnage <= spec.dwtMax;
@@ -135,13 +135,17 @@ function scoreVessel(spec: VesselSpec, req: CharterRequest) {
   return { score, draftOk, loaOk, utilisation };
 }
 
-export function buildRecommendation(req: CharterRequest): CharterRecommendation {
-  const forecast = buildForecast(req);
-  const dest = portOf(req.destinationCode);
-  const origin = portOf(req.originCode);
+export function buildRecommendation(
+  req: CharterRequest,
+  ports: Port[] = PORTS,
+  specs: VesselSpec[] = VESSEL_SPECS,
+): CharterRecommendation {
+  const forecast = buildForecast(req, ports);
+  const dest = portOf(req.destinationCode, ports);
+  const origin = portOf(req.originCode, ports);
 
-  const ranked = [...VESSEL_SPECS]
-    .map((spec) => ({ spec, ...scoreVessel(spec, req) }))
+  const ranked = [...specs]
+    .map((spec) => ({ spec, ...scoreVessel(spec, req, ports) }))
     .sort((a, b) => b.score - a.score);
 
   const winner = ranked[0]!;
